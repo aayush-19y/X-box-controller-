@@ -46,39 +46,53 @@ int speedLT;
 
 
 //Wheels
-/*void forward(){
-    analogWrite(EnR,speedLT);
-    analogWrite(EnL,speedLT);
-    digitalWrite(R_AN1, LOW);
-    digitalWrite(R_CL2, HIGH); 
-    digitalWrite(L_AN3, LOW);
-    digitalWrite(L_CL4, HIGH); 
-   }*/
+void forward(){
+     speedL();
+     digitalWrite(R_AN1, LOW);
+     digitalWrite(R_CL2, HIGH); 
+     digitalWrite(L_AN3, LOW);
+     digitalWrite(L_CL4, HIGH); 
+     }
 
-   void forward(){
-    speedL();
-    digitalWrite(R_AN1, LOW);
-    digitalWrite(R_CL2, HIGH); 
-    digitalWrite(L_AN3, LOW);
-    digitalWrite(L_CL4, HIGH); 
-   }
+void backward(){
+     speedL();
+     digitalWrite(R_AN1, HIGH);
+     digitalWrite(R_CL2, LOW); 
+     digitalWrite(L_AN3, HIGH);
+     digitalWrite(L_CL4, LOW); 
+     }
 
 void stop(){
-    analogWrite(EnR,Speeda);
-    analogWrite(EnL,Speedb);
-    digitalWrite(R_AN1, LOW);
-    digitalWrite(R_CL2, LOW); 
-    digitalWrite(L_AN3, LOW);
-    digitalWrite(L_CL4, LOW);
+     analogWrite(EnR,Speeda);
+     analogWrite(EnL,Speedb);
+     digitalWrite(R_AN1, LOW);
+     digitalWrite(R_CL2, LOW); 
+     digitalWrite(L_AN3, LOW);
+     digitalWrite(L_CL4, LOW);
 }
+
+void right(){
+     speedL();
+     digitalWrite(R_AN1, LOW);
+     digitalWrite(R_CL2, HIGH); 
+     digitalWrite(L_AN3, HIGH);
+     digitalWrite(L_CL4, LOW);
+    }
+
+void left(){
+     speedL();
+     digitalWrite(R_AN1, HIGH);
+     digitalWrite(R_CL2, LOW); 
+     digitalWrite(L_AN3, LOW);
+     digitalWrite(L_CL4, HIGH);
+    }
 
 void speedL(){
-    analogWrite(EnR,speedLT);
-    analogWrite(EnL,speedLT);
-}
+     analogWrite(EnR,speedLT);
+     analogWrite(EnL,speedLT);
+    }
 
   
-
 
 
  void loop()
@@ -110,9 +124,10 @@ void speedL(){
     if( Xbox.getButtonClick(A) )
     {
        Serial.println("A");
-       Serial.println("Wheels Rotating Clockwise");
-       Serial.println("In Forward Direction");
-       forward();
+       //Serial.println("Wheels Rotating Clockwise");
+       //Serial.println("In Forward Direction for (RIGHT)");
+       //forward();
+      // right();
     }
     if( Xbox.getButtonClick(B) )
     {
@@ -145,6 +160,42 @@ void speedL(){
       Serial.print("RT: "); 
       Serial.print(Xbox.getButtonPress(RT)); 
       Serial.println();
+    }
+
+    if(Xbox.getAnalogHat(RightHatX) == -32768 ){
+      Serial.println();
+      Serial.println("Left Side Extreme");
+      Serial.print("RightHatX:");
+      Serial.print(Xbox.getAnalogHat(RightHatX));
+      Serial.println("Left Turn");
+     left();
+    }
+
+    if(Xbox.getAnalogHat(RightHatX) == 32767 ){
+      Serial.println();
+      Serial.println("Right Side Extreme");
+      Serial.print("RightHatX:");
+      Serial.print(Xbox.getAnalogHat(RightHatX));
+      Serial.println("Right Turn");
+      right();
+    }
+
+    if(Xbox.getAnalogHat(LeftHatY) == -32768 ){
+      Serial.println();
+      Serial.println("Up Side Extreme");
+      Serial.print("LeftHatY:");
+      Serial.print(Xbox.getAnalogHat(LeftHatY));
+      Serial.println("Forward");
+      forward();
+    }
+
+     if(Xbox.getAnalogHat(LeftHatY) == 32767 ){
+      Serial.println();
+      Serial.println("Down Side Extreme");
+      Serial.print("LeftHatY:");
+      Serial.print(Xbox.getAnalogHat(LeftHatY));
+      Serial.println("backward");
+      backward();
     }
 
    static uint16_t vibLT, vibRT;
